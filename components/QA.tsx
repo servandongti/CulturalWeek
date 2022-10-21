@@ -15,7 +15,7 @@ const QA = (question:  IQA ) => {
   return (
     <Card>
       <Card.Header>
-        <Text b>Pregunta</Text>
+        <Text>Pregunta</Text>
       </Card.Header>
       <Card.Divider />
       <Card.Body css={{ py: "$10" }}>
