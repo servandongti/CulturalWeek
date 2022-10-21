@@ -1,7 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { supabase } from '../../lib/supabase';
-// create an API route that saves the form data to supabase leaderboard database 
-// and returns the data to the client
 
 export default async function handler(
   req: NextApiRequest,
