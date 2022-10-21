@@ -9,6 +9,7 @@
     "@nextui-org/react": "^1.0.0-beta.10",
     "@supabase/supabase-js": "^2.0.3",
     "next": "latest",
+    "next-themes": "^0.2.1",
     "react": "18.1.0",
     "react-dom": "18.1.0"
   },

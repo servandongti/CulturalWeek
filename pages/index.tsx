@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { createClient } from '@supabase/supabase-js'
-import { Table, useCollator } from '@nextui-org/react';
+import { Table } from '@nextui-org/react';
+import { supabase } from '../lib/supabase'
 
 interface ILeaderBoard {
   id?: number;
@@ -12,11 +12,7 @@ interface ILeaderBoard {
 }
 
 export async function getStaticProps() {
-  const supabaseAdmin = createClient(
-    process.env.SUPABASE_URL || '',
-    process.env.SUPABASE_SERVICE_ROLE || ''
-  )
-  const { data } = await supabaseAdmin.from('leaderboard').select('*').order('id')
+  const { data } = await supabase.from('leaderboard').select('*').order('id')
   return {
     props: {
       leaderboard: data,
@@ -29,7 +25,6 @@ function cn(...classes: string[]) {
 }
 
 const Home = ({ leaderboard }: { leaderboard: ILeaderBoard[] }) => {
-  console.log(leaderboard)
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
@@ -43,36 +38,43 @@ const Home = ({ leaderboard }: { leaderboard: ILeaderBoard[] }) => {
           'bg-gradient-to-r from-[#42d392] to-[#647eff]',
           'text:2xl sm:text-4xl p-8'
         )}>Leaderboard</h1>
-        <Table
-          bordered
-          shadow
-          color="secondary"
-          aria-label="Example pagination  table"
-          css={{
-            height: "auto",
-            minWidth: "100%",
-          }}
+        {
+          leaderboard.length === 0 ? (
+            <p className="text-2xl font-extrabold flex justify-center">No hay participates registrados</p>
+          ) : (
 
-        >
-          <Table.Header>
-            <Table.Column allowsSorting>NAME</Table.Column>
-            <Table.Column>SCORE</Table.Column>
-            <Table.Column>PHONE</Table.Column>
-          </Table.Header>
-          <Table.Body>
-            {
-              leaderboard.map(({ id, name, score, phone }) => (
-                <Table.Row key={id}>
-                  <Table.Cell>{name}</Table.Cell>
-                  <Table.Cell>{score}</Table.Cell>
-                  <Table.Cell>{phone}</Table.Cell>
-                </Table.Row>
-              ))
-            }
+            <Table
+              bordered
+              shadow
+              color="secondary"
+              aria-label="Example pagination  table"
+              css={{
+                height: "auto",
+                minWidth: "100%",
+              }}
 
-          </Table.Body>
+            >
+              <Table.Header>
+                <Table.Column allowsSorting>NAME</Table.Column>
+                <Table.Column>SCORE</Table.Column>
+                <Table.Column>PHONE</Table.Column>
+              </Table.Header>
+              <Table.Body>
+                {
+                  leaderboard.slice(0, 10).map(({ id, name, score, phone }) => (
+                    <Table.Row key={id}>
+                      <Table.Cell>{name}</Table.Cell>
+                      <Table.Cell>{score}</Table.Cell>
+                      <Table.Cell>{phone}</Table.Cell>
+                    </Table.Row>
+                  ))
+                }
+              </Table.Body>
 
-        </Table>
+            </Table>
+          )
+        }
+
 
       </main>
 
