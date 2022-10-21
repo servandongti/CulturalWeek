@@ -1,7 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { createClient } from '@supabase/supabase-js'
+import { Form } from '../components/Form'
+import { supabase } from '../lib/supabase';
 import { Table, useCollator } from '@nextui-org/react';
 
 interface ILeaderBoard {
@@ -12,11 +13,7 @@ interface ILeaderBoard {
 }
 
 export async function getStaticProps() {
-  const supabaseAdmin = createClient(
-    process.env.SUPABASE_URL || '',
-    process.env.SUPABASE_SERVICE_ROLE || ''
-  )
-  const { data } = await supabaseAdmin.from('leaderboard').select('*').order('id')
+  const { data } = await supabase.from('leaderboard').select('*').order('id')
   return {
     props: {
       leaderboard: data,
@@ -74,6 +71,7 @@ const Home = ({ leaderboard }: { leaderboard: ILeaderBoard[] }) => {
 
         </Table>
 
+        <Form />
       </main>
 
       <footer className="flex h-24 w-full items-center justify-center border-t">
