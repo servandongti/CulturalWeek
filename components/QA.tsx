@@ -1,32 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Grid, Text, Button, Row } from "@nextui-org/react";
+import { supabase } from "../lib/supabase";
 
 interface IQA {
   question: string;
   answer: string;
 }
 
-const QA = ({ qa }: { qa: IQA[] }) => {
+const QA = (question:  IQA ) => {
+    const [answers, setAnswers] = useState(false)
+    const onClickAnswer = () => {
+        setAnswers(true)
+    }
   return (
-    <main className="flex w-auto flex-1 flex-col items-center justify-center px-20 text-center mt-8">
-      <Card>
-        <Card.Header>
-          <Text b>Pregunta</Text>
-        </Card.Header>
-        <Card.Divider />
-        <Card.Body css={{ py: "$10" }}>
-          <Text>
-            {qa.map(x => x.question)}
-          </Text>
-        </Card.Body>
-        <Card.Divider />
-        <Card.Footer>
-          <Row justify="flex-end">
-            <Button size="sm" color="gradient">Agree</Button>
-          </Row>
-        </Card.Footer>
-      </Card>
-    </main>
+    <Card>
+      <Card.Header>
+        <Text b>Pregunta</Text>
+      </Card.Header>
+      <Card.Divider />
+      <Card.Body css={{ py: "$10" }}>
+        {question.question}
+      </Card.Body>
+      <Card.Divider />
+      <Card.Footer>
+        <Row justify="flex-end">
+        <Text className={answers ? 'text-green-500' : 'hidden'}>{question.answer}</Text>
+        {!answers && <Button size="sm" color="gradient" onClick={() => onClickAnswer()}>
+            Respuesta
+          </Button>}
+          
+        </Row>
+      </Card.Footer>
+    </Card>
   );
 };
 
