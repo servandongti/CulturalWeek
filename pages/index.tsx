@@ -10,7 +10,7 @@ interface ILeaderBoard {
   phone: number;
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const { data } = await supabase.from('leaderboard').select('*').order('id')
   return {
     props: {
