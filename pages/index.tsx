@@ -1,6 +1,5 @@
-import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
+import Link from 'next/link'
 import { Table } from '@nextui-org/react';
 import { supabase } from '../lib/supabase'
 
@@ -25,6 +24,9 @@ function cn(...classes: string[]) {
 }
 
 const Home = ({ leaderboard }: { leaderboard: ILeaderBoard[] }) => {
+  const sortedLeaderboard = leaderboard.sort((a, b) => b.score - a.score)
+
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
@@ -40,7 +42,7 @@ const Home = ({ leaderboard }: { leaderboard: ILeaderBoard[] }) => {
         )}>Leaderboard</h1>
         {
           leaderboard.length === 0 ? (
-            <p className="text-2xl font-extrabold flex justify-center">No hay participates registrados</p>
+            <p className="text-2xl font-extrabold flex justify-center">No hay participantes registrados</p>
           ) : (
 
             <Table
@@ -61,7 +63,7 @@ const Home = ({ leaderboard }: { leaderboard: ILeaderBoard[] }) => {
               </Table.Header>
               <Table.Body>
                 {
-                  leaderboard.slice(0, 10).map(({ id, name, score, phone }) => (
+                  sortedLeaderboard.slice(0, 10).map(({ id, name, score, phone }) => (
                     <Table.Row key={id}>
                       <Table.Cell>{name}</Table.Cell>
                       <Table.Cell>{score}</Table.Cell>
@@ -78,10 +80,12 @@ const Home = ({ leaderboard }: { leaderboard: ILeaderBoard[] }) => {
 
       </main>
 
-      <footer className="flex h-24 w-full items-center justify-center border-t">
-        <a>
-          Powered by <b>GEITS</b>{' '}
-        </a>
+      <footer className="flex h-24 w-full items-center mt-5 justify-center border-t">
+        <Link href='https://discord.gg/GE5zcR6J'>
+          <a target="_blank" className='text-[#f1f1f1] border-b border-green-400'>
+            Powered by <b>GEITS</b>{' '}
+          </a>
+        </Link>
       </footer>
     </div>
   )
